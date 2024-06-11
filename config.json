@@ -1,0 +1,78 @@
+{
+    "name": "MOSAD_PTBXL_MI",
+    "n_gpu": 1,
+    "arch": {
+        "type": "MOSAD",
+        "args": {
+            "num_vars": 12,
+            "num_node_features": 1000,
+            "embedding_dim": 120,
+            "projection_dim": 32,
+            "dropout_rate": 0.2,
+            "encoder_decoder_layers": 8,
+            "projection_layers": 1,
+            "detector_layers": 2,
+            "tcn_kernel_size": 7,
+            "tcn_out_channels": 20,
+            "tcn_maxpool_out_channels": 8,
+            "normalize_embedding": true,
+            "masked_recon": true,
+            "con_inf": true,
+            "dev_inf": true,
+            "node_level": false,
+            "coe_rate": 0.05,
+            "mixup_rate": 0.05,
+            "con_inf_batch_size": 64
+        }
+    },
+    "num_vars": 12,
+    "data_loader": {
+        "type": "PTBXLDataLoader",
+        "args": {
+            "data_dir": "data/PTBXL/ptbxl_train_mi",
+            "batch_size": 64,
+            "shuffle": false,
+            "validation_split": 0.1,
+            "num_workers": 0
+        }
+    },
+    "data_loader_eval": {
+        "type": "PTBXLDataLoader",
+        "args": {
+            "data_dir": "data/PTBXL/ptbxl_test_mi",
+            "batch_size": 128,
+            "num_workers": 0
+        }
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args": {
+            "lr": 0.001,
+            "weight_decay": 0.00001,
+            "amsgrad": true
+        }
+    },
+    "loss": "mosad_loss",
+    "lamda_c_max": 1,
+    "lamda_d_max": 1,
+    "iso_anom_shots": 10,
+    "metrics": [],
+    "metrics_eval": [],
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 50,
+            "gamma": 0.5
+        }
+    },
+    "trainer": {
+        "epochs": 30,
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+        "monitor": "min val_loss",
+        "early_stop": 2,
+        "tensorboard": false
+    },
+    "notes": null
+}
